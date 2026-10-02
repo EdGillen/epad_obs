@@ -1,6 +1,32 @@
 #!/bin/bash
+# Run once by Binder (repo2docker) after installing environment.yml. Only writes Jupyter config.
+set -euo pipefail
 
-#pip install .
-jupyter nbextension     enable --py --sys-prefix appmode
-jupyter serverextension enable --py --sys-prefix appmode
-#EOF
+# 1. Voila can crash on notebooks with markdown images when the Jupyter server uses its default
+#    asynchronous file manager (open bug voila-dashboards/voila#1473). Use the synchronous one.
+#    (Same set-up as in EdGillen/epad_2body.)
+#    (Merged into jupyter_server_config.json: settings in jupyter_server_config.d/ are NOT read, only
+#    extension on/off switches are.)
+python - <<'EOF'
+import json, os, pathlib
+path = pathlib.Path(os.environ["NB_PYTHON_PREFIX"], "etc", "jupyter", "jupyter_server_config.json")
+config = json.loads(path.read_text()) if path.exists() else {}
+config.setdefault("ServerApp", {})["contents_manager_class"] = (
+    "jupyter_server.services.contents.largefilemanager.LargeFileManager")
+path.parent.mkdir(parents=True, exist_ok=True)
+path.write_text(json.dumps(config, indent=2) + "\n")
+EOF
+
+# 2. Build Matplotlib's font cache now, so students don't wait for it (or see a message about it).
+python -c "import matplotlib.pyplot"
+
+# 3. Don't show students JupyterLab's "get notified about official Jupyter news?" pop-up.
+mkdir -p "${NB_PYTHON_PREFIX}/share/jupyter/lab/settings/overrides.d"
+cat > "${NB_PYTHON_PREFIX}/share/jupyter/lab/settings/overrides.d/epad.json" <<'EOF'
+{
+  "@jupyterlab/apputils-extension:notification": {
+    "checkForUpdates": false,
+    "fetchNews": "false"
+  }
+}
+EOF
