@@ -1,0 +1,2 @@
+# FITS light curves are binary data: no text diffs or line-ending changes
+*.fits binary
