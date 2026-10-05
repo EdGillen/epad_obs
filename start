@@ -1,0 +1,12 @@
+#!/bin/bash
+# Run by Binder (repo2docker) at the start of every session, before Jupyter starts.
+#
+# A Binder session reports all the CPUs of its host (e.g. 48) but may use only about one. numpy's
+# linear algebra (OpenBLAS) then starts one thread per reported CPU, and the threads compete for that
+# one CPU: in direct_imaging.ipynb one SVD took 102 s instead of 0.1 s (2i2c Binder, 2026-10-05).
+# So use a single thread. (This file is only used by Binder, not when running the notebooks locally.)
+export OMP_NUM_THREADS=1
+export OPENBLAS_NUM_THREADS=1
+export MKL_NUM_THREADS=1
+
+exec "$@"
