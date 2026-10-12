@@ -1,8 +1,8 @@
-# Environment for running the notebooks (kep_light.ipynb, direct_imaging.ipynb) on Binder
+# Environment for running the notebooks (kep_light, direct_imaging, astrometry_simple) on Binder
 # (mybinder.org reads this file automatically). It also works locally:  conda env create -f environment.yml
 #
 # The minimum versions are the ones the notebooks were tested with (kep_light 2026-10-02,
-# direct_imaging 2026-10-05), so that Binder does not fall back to the older versions in its base image.
+# direct_imaging 2026-10-05, astrometry_simple 2026-10-12), so that Binder does not fall back to the older versions in its base image.
 name: epad_obs
 channels:
   - conda-forge
@@ -12,7 +12,7 @@ dependencies:
   - numpy>=2.5,<3
   - scipy>=1.18
   - pandas>=2.3
-  - astropy-base>=8.0                # Box Least Squares periodogram
+  - astropy-base>=8.0                # Box Least Squares periodogram (kep_light); Earth's position (astrometry)
   - lightkurve>=2.6,<3               # reads Kepler light curves; downloads from MAST ('Other Kepler star')
   - astroquery>=0.4.11               # NASA Exoplanet Archive queries (for downloaded stars)
   - h5py>=3.16                       # direct_imaging.ipynb: reads the beta Pictoris images

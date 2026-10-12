@@ -7,6 +7,7 @@ Interactive notebooks on observing exoplanets. Click a badge to open a notebook 
 |---|---|---|
 | Kepler light curves: finding and fitting transits | [![Kepler light curves: app](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/EdGillen/epad_obs/HEAD?urlpath=voila/render/kep_light.ipynb) | [![Kepler light curves: code](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/EdGillen/epad_obs/HEAD?urlpath=lab/tree/kep_light.ipynb) |
 | Direct imaging: the planet around beta Pictoris | [![Direct imaging: app](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/EdGillen/epad_obs/HEAD?urlpath=voila/render/direct_imaging.ipynb) | [![Direct imaging: code](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/EdGillen/epad_obs/HEAD?urlpath=lab/tree/direct_imaging.ipynb) |
+| Astrometry with Gaia: the planet Gaia-4 b | [![Astrometry (Gaia-4 b): app](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/EdGillen/epad_obs/HEAD?urlpath=voila/render/astrometry_simple.ipynb) | [![Astrometry (Gaia-4 b): code](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/EdGillen/epad_obs/HEAD?urlpath=lab/tree/astrometry_simple.ipynb) |
 
 Notes:
 - Starting Binder can take a minute or two (longer the first time after the repository changes).
@@ -22,6 +23,12 @@ Notes:
 - `kep_light.ipynb`: the notebook; the analysis functions it uses are in `kepler_tools.py`.
 - `direct_imaging.ipynb`: angular differential imaging of beta Pictoris b; the images
   (VLT/NACO, M' band; Bonnefoy et al. 2013) are in `data/betapic_naco_mp.hdf5`.
+- `astrometry_simple.ipynb`: the astrometric orbit of the planet Gaia-4 b, from simulated and then real Gaia
+  measurements; the analysis functions it uses are in `astrometry_tools.py`.
+- `data/gaia/`: Gaia DR4 pre-release epoch astrometry (the along-scan measurements used by Gaia's own solution)
+  of Gaia-4, Gaia BH3 and HD 114762, selected and reformatted by `tools/make_gaia_data.py` from the
+  [pre-release](https://www.cosmos.esa.int/web/gaia/dr4-prerelease). Data: ESA/Gaia/DPAC, licensed under
+  [CC BY-NC 3.0 IGO](https://creativecommons.org/licenses/by-nc/3.0/igo/); see `data/gaia/README.md`.
 - `data/kepler/`: Kepler long-cadence light curves (all quarters) of Kepler-7, Kepler-8 and Kepler-10
   from [MAST](https://archive.stsci.edu/kepler/), and `targets.csv` with their published transit
   parameters (Esteves et al. 2015, via the [NASA Exoplanet Archive](https://exoplanetarchive.ipac.caltech.edu/))
@@ -35,7 +42,7 @@ Notes:
 conda env create -f environment.yml
 conda activate epad_obs
 jupyter lab              # code view
-voila kep_light.ipynb    # app view (likewise for direct_imaging.ipynb)
+voila kep_light.ipynb    # app view (likewise for the other notebooks)
 ```
 
 ## Credits
@@ -46,3 +53,4 @@ searching, outlier removal and transit fitting added.
 `direct_imaging.ipynb` was updated in 2026 for current Jupyter and Binder: the PSF subtraction,
 originally done with PynPoint, is now written out with numpy and scipy (same result), with a slider
 for the number of principal components and a switch for rotating the images.
+`astrometry_simple.ipynb` is new (2026). It uses Gaia data (ESA/Gaia/DPAC; see `data/gaia/README.md`).
